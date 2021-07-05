@@ -12,7 +12,7 @@ namespace files_module
             var salesFiles = FindFiles("stores");
 
             // For each file that matched the search criteria in the FindFiles method
-            // it was added to "salesFile" - and we now print each filename and its location
+            // it was added to "salesFile" - and we can now print each filename and its location
             foreach (var file in salesFiles) 
             {
                 Console.WriteLine(file);
