@@ -8,11 +8,19 @@ namespace files_module
     {
         static void Main(string[] args)
         {
-            // Pass in the name of the folder "stores" to the FindFiles method
-            var salesFiles = FindFiles("stores");
+            // // Pass in the name of the folder "stores" to the FindFiles method
+            // var salesFiles = FindFiles("stores");
 
-            // For each file that matched the search criteria in the FindFiles method
-            // it was added to "salesFile" - and we can now print each filename and its location
+            // // For each file that matched the search criteria in the FindFiles method
+            // // it was added to "salesFile" - and we can now print each filename and its location
+            // foreach (var file in salesFiles) 
+            // {
+            //     Console.WriteLine(file);
+            // }
+            
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var storesDirectory = Path.Combine(currentDirectory, "stores");
+            var salesFiles = FindFiles(storesDirectory);
             foreach (var file in salesFiles) 
             {
                 Console.WriteLine(file);
@@ -32,9 +40,12 @@ namespace files_module
             // Search and check each file in "foundFiles" against parameter
             foreach (var file in foundFiles) 
             {
+                // Get the extension of each file
+                var extension = Path.GetExtension(file);
+
                 // The file name will contain the full path so only check the end of it and if a match
                 // add this file to "salesFile"
-                if (file.EndsWith("sales.json")) 
+                if (file.EndsWith(".json")) 
                 {
                     salesFiles.Add(file);
                 }
