@@ -8,23 +8,22 @@ namespace files_module
     {
         static void Main(string[] args)
         {
-            // // Pass in the name of the folder "stores" to the FindFiles method
-            // var salesFiles = FindFiles("stores");
-
-            // // For each file that matched the search criteria in the FindFiles method
-            // // it was added to "salesFile" - and we can now print each filename and its location
-            // foreach (var file in salesFiles) 
-            // {
-            //     Console.WriteLine(file);
-            // }
-            
             var currentDirectory = Directory.GetCurrentDirectory();
             var storesDirectory = Path.Combine(currentDirectory, "stores");
+            
+            // Add path to the "salesTotals" directory
+            var salesTotalDir = Path.Combine(currentDirectory, "salesTotalDir");
+            
+            // Create the directory "salesTotalDir"
+            Directory.CreateDirectory(salesTotalDir); 
+            
             var salesFiles = FindFiles(storesDirectory);
-            foreach (var file in salesFiles) 
-            {
-                Console.WriteLine(file);
-            }
+
+            // Create an empty file called "totals.txt" inside 
+            // the newly created "salesTotalsDir" directory.
+            // NB we use an empty string for the file's contents for now.
+            File.WriteAllText(Path.Combine(salesTotalDir, "totals.txt"), String.Empty);
+
         }
 
         // Create a new function called FindFiles that takes a folderName parameter.
