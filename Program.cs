@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace files_module
 {
@@ -19,12 +20,13 @@ namespace files_module
             
             var salesFiles = FindFiles(storesDirectory);
 
-            // Create an empty file called "totals.txt" inside 
-            // the newly created "salesTotalsDir" directory.
-            // NB we use an empty string for the file's contents for now.
-            File.WriteAllText(Path.Combine(salesTotalDir, "totals.txt"), String.Empty);
+            // Add a call to the CalculateSalesTotal function
+            var salesTotal = CalculateSalesTotal(salesFiles); 
 
-        }
+            // Use "File.AppendAllText" so nothing in the file gets overwritten.
+            // Write the value of the "salesTotal" variable to the "totals.txt" file
+            File.AppendAllText(Path.Combine(salesTotalDir, "totals.txt"), $"{salesTotal}{Environment.NewLine}");
+        }//Main
 
         // Create a new function called FindFiles that takes a folderName parameter.
         static IEnumerable<string> FindFiles(string folderName) 
@@ -51,5 +53,35 @@ namespace files_module
             }
             return salesFiles; // Return the contents of "salesfile" to memory
         }//findFiles
+
+        // Create a new function that will calculate the sales total. 
+        // This method should take an IEnumerable<string> of file paths 
+        // that it can iterate over.
+        static double CalculateSalesTotal(IEnumerable<string> salesFiles) 
+        {
+            double salesTotal = 0;
+
+            // READ FILES LOOP
+            // Loop over each file path in "salesFiles"
+            foreach (var file in salesFiles)
+            {
+                // Read the contents if the file
+                string salesJson = File.ReadAllText(file);
+
+                // Parse the contents as JSON
+                SalesData data = JsonConvert.DeserializeObject<SalesData>(salesJson);
+
+                // Add the amount found in the "Total" field to the salesTotal variable
+                salesTotal += data.Total;
+            }//foreach
+
+            return salesTotal;
+        }
+
+        class SalesData 
+        {
+            public double Total {get; set;}
+        }
+
     }//Program
 }//files_module
